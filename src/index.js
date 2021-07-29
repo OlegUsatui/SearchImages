@@ -1,22 +1,31 @@
 import './sass/main.scss';
 import NewsApiService from './news/news-service'
 import hitsTpl from './templates/photo-cards.hbs'
+import LoadMoreBtn from './news/load-more-button';
 import Notiflix from "notiflix";
+import { load } from 'js-yaml';
 
 const searchForm = document.querySelector('.search-form');
-const loadMoreBtn = document.querySelector('.load-more');
 const gallery = document.querySelector('.gallery')
+
+
 
 let totalHits = 0;
 
 const newsApiService = new NewsApiService();
+const loadMoreBtn = new LoadMoreBtn({
+    selector: '.load-more',
+})
 
 searchForm.addEventListener('submit', onSearch);
-loadMoreBtn.addEventListener('click', onLoadMore);
+loadMoreBtn.button.addEventListener('click', onLoadMore);
+
+loadMoreBtn.hide()
+
 
 function onSearch(e) {
     e.preventDefault();
- 
+
     clearHitsContainer();
     newsApiService.query = e.currentTarget.searchQuery.value;
 
@@ -27,11 +36,19 @@ function onSearch(e) {
 
     newsApiService.resetPage();
     newsApiService.fetchArticles().then(data => {
-       totalHits = data.total;
-        Notiflix.Notify.success(`Hooray! We found ${totalHits} images`);
+        totalHits = data.total;
 
-        appendHitsMarcup(data.hits)
-    }).catch(console.log)
+        if (totalHits > 1) {
+            loadMoreBtn.show()
+            Notiflix.Notify.success(`Hooray! We found ${totalHits} images`);
+            appendHitsMarcup(data.hits)
+        } else {
+        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.'),
+        loadMoreBtn.hide()
+                }
+    })
+
+
 
 };
 
