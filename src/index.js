@@ -1,9 +1,9 @@
-import './sass/main.scss';
+
 import NewsApiService from './news/news-service'
 import hitsTpl from './templates/photo-cards.hbs'
 import LoadMoreBtn from './news/load-more-button';
 import Notiflix from "notiflix";
-import { load } from 'js-yaml';
+import './sass/main.scss';
 
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery')
