@@ -1,9 +1,9 @@
-
-import NewsApiService from './news/news-service'
-import hitsTpl from './templates/photo-cards.hbs'
+import './sass/main.scss';
+import NewsApiService from './news/news-service';
+import hitsTpl from './templates/photo-cards.hbs';
 import LoadMoreBtn from './news/load-more-button';
 import Notiflix from "notiflix";
-import './sass/main.scss';
+
 
 const searchForm = document.querySelector('.search-form');
 const gallery = document.querySelector('.gallery')
@@ -15,12 +15,12 @@ let totalHits = 0;
 const newsApiService = new NewsApiService();
 const loadMoreBtn = new LoadMoreBtn({
     selector: '.load-more',
-})
+});
 
 searchForm.addEventListener('submit', onSearch);
 loadMoreBtn.button.addEventListener('click', onLoadMore);
 
-loadMoreBtn.hide()
+loadMoreBtn.hide();
 
 
 function onSearch(e) {
@@ -54,12 +54,12 @@ function onSearch(e) {
 
 function onLoadMore() {
     newsApiService.fetchArticles().then(data => appendHitsMarcup(data.hits))
-}
+};
 
 function appendHitsMarcup(hits) {
     gallery.insertAdjacentHTML('beforeend', hitsTpl(hits))
-}
+};
 
 function clearHitsContainer() {
     gallery.innerHTML = '';
-}
+};
